@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     return 2;
   }
 
-  printf("Connected to %s:%s\n", argv[1], argv[2]);
+  printf("Connected to %s:%s\n", HOST, PORT);
 
   if (!dtls_send(&dtls, MESSAGE, strlen(MESSAGE))) {
     dtls_close(&dtls);

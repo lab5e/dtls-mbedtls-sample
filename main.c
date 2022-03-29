@@ -5,14 +5,18 @@
 
 #define MESSAGE "Echo this"
 
-// The
+#define HOST "data.lab5e.com"
+#define PORT "1234"
+
+// This is a very simple
 int main(int argc, char *argv[]) {
   dtls_state_t dtls;
 
-  if (!dtls_connect(&dtls, argv[1], argv[2])) {
+  if (!dtls_connect(&dtls, HOST, PORT)) {
     dtls_close(&dtls);
     return 2;
   }
+
   printf("Connected to %s:%s\n", argv[1], argv[2]);
 
   if (!dtls_send(&dtls, MESSAGE, strlen(MESSAGE))) {

@@ -18,7 +18,7 @@
  * Struct to hold the internal state of the DTLS connection.
  */
 typedef struct dtls_state_s {
-  mbedtls_net_context server_fd;
+  mbedtls_net_context fd;
   mbedtls_entropy_context entropy;
   mbedtls_ssl_context ssl;
   mbedtls_ssl_config conf;

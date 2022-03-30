@@ -40,7 +40,7 @@ bool dtls_connect(dtls_state_t *state, const char *server_addr,
   int ret = 0;
 
   // Set up socket descriptors
-  mbedtls_net_init(&state->server_fd);
+  mbedtls_net_init(&state->fd);
 
   // Set up SSL configuration
   mbedtls_ssl_config_init(&state->conf);
@@ -123,8 +123,8 @@ bool dtls_connect(dtls_state_t *state, const char *server_addr,
   }
 
   // Connect the underlying socket
-  ret = mbedtls_net_connect(&state->server_fd, server_addr, port,
-                            MBEDTLS_NET_PROTO_UDP);
+  ret =
+      mbedtls_net_connect(&state->fd, server_addr, port, MBEDTLS_NET_PROTO_UDP);
   if (ret != 0) {
     print_mbedtls_error("Error connecting", ret);
     return false;
@@ -133,7 +133,7 @@ bool dtls_connect(dtls_state_t *state, const char *server_addr,
   // Link the socket weapper to the TLS session structure and assign the send
   // and receive functions that will be used. This is the default send and
   // receive functions
-  mbedtls_ssl_set_bio(&state->ssl, &state->server_fd, mbedtls_net_send,
+  mbedtls_ssl_set_bio(&state->ssl, &state->fd, mbedtls_net_send,
                       mbedtls_net_recv, mbedtls_net_recv_timeout);
 
   // Set timer callbacks
@@ -218,7 +218,7 @@ bool dtls_close(dtls_state_t *state) {
     ret = mbedtls_ssl_close_notify(&state->ssl);
   } while (ret == MBEDTLS_ERR_SSL_WANT_WRITE);
 
-  mbedtls_net_free(&state->server_fd);
+  mbedtls_net_free(&state->fd);
   mbedtls_x509_crt_free(&state->all_certs);
   mbedtls_ssl_free(&state->ssl);
   mbedtls_ssl_config_free(&state->conf);
